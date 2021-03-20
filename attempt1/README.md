@@ -17,8 +17,9 @@ server on the other pi.
 
 ## Protocol
 We will be devising a protocol for this exchange. Our setup is as follows. Each
-8bit register will control two motors, and there are 4 registers. 2 bits will
-determine whether or not data is pertinent to each register. Each motor gets
-two bits of informatition. Direction and power:
-
-| 
+8bit register will control two motors, and there are 4 registers. As such,
+there will be 4 queues. We will leverage i2c and smbus' routing ability to
+reduce our transmission to 3 bits.
+| Bit 2 | Bit 1 | Bit 0 |
+|---|---|---|
+|Power Select|Direction Select|Motor Select|
