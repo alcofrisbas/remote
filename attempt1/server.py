@@ -4,7 +4,7 @@ import time
 import smbus
 from gen import step
 
-def Eightbit(q, bus, dev,reg):
+def Eightbit(q, bus, dev,reg,delay):
     """
     3bit protocol for now:
     0: Motor Select
@@ -15,6 +15,8 @@ def Eightbit(q, bus, dev,reg):
     s1 = step()
     run0 = False
     run1 = False
+    out0 = 0b0000
+    out1 = 0b0000
     while True:
         # blank 8bit message
         send = 0x00
@@ -23,6 +25,7 @@ def Eightbit(q, bus, dev,reg):
             item = q.get(False)
             stat_set = item >> 2
             backward = False
+            run = False
             if 0b010 & item:
                 backward = True
             if 0b100 & item:
@@ -32,13 +35,14 @@ def Eightbit(q, bus, dev,reg):
                 run1 = run
             else:
                 s0.direction(backward)
-                run1 = run
+                run0 = run
         except queue.Empty:
             pass
         data = 0x00
         if run0:
-            data += next(s0)
+            out0 = next(s0)
         if run1:
-            data += next(s1) << 4
+            out1 = next(s1) << 4
+        data = out0 + out1
         print("{0:08b}".format(data))
-        time.sleep(0.1)
+        time.sleep(delay)

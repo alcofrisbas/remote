@@ -28,6 +28,6 @@ class step:
 
     def __next__(self):
         out = self.steps[self.n]
-        self.n = (self.n + _self.direction) % self.l
+        self.n = (self.n + self._direction) % self.l
         return out
 
