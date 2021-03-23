@@ -44,5 +44,25 @@ def Eightbit(q, bus, dev,reg,delay):
         if run1:
             out1 = next(s1) << 4
         data = out0 + out1
-        print("{0:08b}".format(data))
+        # print("{0:08b}".format(data))
+        bus.write_byte_data(dev,reg,data)
         time.sleep(delay)
+
+
+def server():
+    # set up buses...
+    dev0 = 0x20
+    dev1 = 0x21
+    
+    ioA = 0x00
+    ioB = 0x01
+
+    olA = 0x14
+    olB = 0x15
+
+    bus.write_byte_data(dev0, ioA, 0x00)
+    bus.write_byte_data(dev0, ioB, 0x00)
+    bus.write_byte_data(dev1, ioA, 0x00)
+    bus.write_byte_data(dev1, ioB, 0x00)
+
+
